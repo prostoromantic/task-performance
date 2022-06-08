@@ -1,6 +1,7 @@
 const contacts = document.getElementsByClassName("contacts")[0];
 const stickyHeader = document.getElementsByClassName("stickyHeader")[0];
-
+var height = "0";
+ 
 function addContacts() {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < 50000; i++) {
@@ -10,17 +11,11 @@ function addContacts() {
     fragment.appendChild(child);
   }
   contacts.appendChild(fragment);
+  height = window.getComputedStyle(document.querySelector(".contact")).height.replace("px", "");
 }
-
+ 
 contacts.addEventListener("scroll", (e) => {
-  const items = Array.from(contacts.getElementsByClassName("contact"));
-  const itemOffsets = items.map((item) => item.offsetTop);
-  const topItemIndex = itemOffsets.findIndex(
-    (offset) => contacts.scrollTop - offset <= -18
-  );
-  if (topItemIndex !== -1) {
-    stickyHeader.textContent = items[topItemIndex].textContent;
-  }
+  stickyHeader.textContent = Math.round(contacts.scrollTop / Number(height));
 });
-
+ 
 addContacts();
